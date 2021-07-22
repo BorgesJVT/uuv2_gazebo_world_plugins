@@ -2,7 +2,7 @@
 
 <sdf version="1.6">
   <world name="empty_underwater">
-    <plugin name="underwater_current_plugin" filename="libuuv_underwater_current_plugin.so">
+    <plugin name="underwater_current_plugin" filename="libunderwater_current_plugin.so">
       <namespace>hydrodynamics</namespace>
       <constant_current>
         <topic>current_velocity</topic>

@@ -1,34 +1,34 @@
 cmake_minimum_required(VERSION 3.5)
 project(uuv2_gazebo_world_plugins)
 
-find_package(gazebo REQUIRED)
-find_package(ignition-common3 REQUIRED)
 find_package(ament_cmake REQUIRED)
+find_package(GAZEBO REQUIRED)
+find_package(ignition-common3 REQUIRED)
 
-include_directories(
-  include
-  ${GAZEBO_INCLUDE_DIRS}
-)
-link_directories(${GAZEBO_LIBRARY_DIRS})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
-
-add_library(uuv_underwater_current_plugin SHARED
-  src/UnderwaterCurrentPlugin.cc
-  src/GaussMarkovProcess.cc
+# BUILD
+add_library(underwater_current_plugin SHARED
+  src/UnderwaterCurrentPlugin.cpp
+  src/GaussMarkovProcess.cpp
 )
 
-target_link_libraries(uuv_underwater_current_plugin ${ignition-common3_LIBRARIES})
+target_include_directories(underwater_current_plugin PUBLIC include)
+ament_target_dependencies(underwater_current_plugin PUBLIC GAZEBO ignition-common3)
 
-ament_export_dependencies(uuv2_gazebo_world_plugins)
-ament_package()
+# EXPORT
+ament_export_libraries(underwater_current_plugin)
+ament_export_dependencies(GAZEBO ignition-common3)
+
+# INSTALL
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
 
 install(TARGETS 
-  uuv_underwater_current_plugin 
+  underwater_current_plugin 
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
 
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION include/
-)
+ament_package()

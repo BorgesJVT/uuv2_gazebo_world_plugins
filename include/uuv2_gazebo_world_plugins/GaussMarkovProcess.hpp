@@ -13,11 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file gauss_markov_process.hh
+/// \file gauss_markov_process.hpp
 /// \brief Implementation of a Gauss-Markov process model
 
-#ifndef UUV2_GAZEBO_ROS_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HH_
-#define UUV2_GAZEBO_ROS_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HH_
+#ifndef UUV2_GAZEBO_ROS_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HPP_
+#define UUV2_GAZEBO_ROS_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HPP_
 
 #include <gazebo/common/Plugin.hh>
 
@@ -80,4 +80,4 @@ class GZ_PLUGIN_VISIBLE GaussMarkovProcess
 };
 
 }  // namespace uuv2_gazebo_world_plugins
-#endif  // UUV2_GAZEBO_ROS_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HH_
+#endif  // UUV2_GAZEBO_ROS_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HPP_

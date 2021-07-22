@@ -13,13 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file UnderwaterCurrentPlugin.cc
+/// \file UnderwaterCurrentPlugin.cpp
 
 #include <functional>
 
 #include <gazebo/physics/World.hh>
 
-#include <uuv2_gazebo_world_plugins/UnderwaterCurrentPlugin.hh>
+#include <uuv2_gazebo_world_plugins/UnderwaterCurrentPlugin.hpp>
 
 using namespace uuv2_gazebo_world_plugins;
 

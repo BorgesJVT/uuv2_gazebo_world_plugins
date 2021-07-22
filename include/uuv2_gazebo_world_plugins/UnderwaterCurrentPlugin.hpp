@@ -16,8 +16,8 @@
 /// \file UnderwaterCurrentPlugin.hpp
 /// \brief Plugin that for the underwater world
 
-#ifndef UUV2_GAZEBO_ROS_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HH_
-#define UUV2_GAZEBO_ROS_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HH_
+#ifndef UUV2_GAZEBO_ROS_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HPP_
+#define UUV2_GAZEBO_ROS_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HPP_
 
 #include <memory>
 #include <map>
@@ -26,7 +26,7 @@
 #include <gazebo/gazebo.hh>
 #include <gazebo/transport/TransportTypes.hh>
 #include <sdf/sdf.hh>
-#include <uuv2_gazebo_world_plugins/GaussMarkovProcess.hh>
+#include <uuv2_gazebo_world_plugins/GaussMarkovProcess.hpp>
 
 using namespace gazebo;
 
@@ -94,4 +94,4 @@ class GZ_PLUGIN_VISIBLE UnderwaterCurrentPlugin : public WorldPlugin
 };
 
 }  // namespace uuv2_gazebo_world_plugins
-#endif  // UUV2_GAZEBO_ROS_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HH_
+#endif  // UUV2_GAZEBO_ROS_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HPP_
