@@ -2,8 +2,8 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>uuv2_gazebo_world_plugins</name>
-  <version>0.1.0</version>
-  <description>The uuv2_gazebo_world_plugins package</description>
+  <version>0.0.1</version>
+  <description>Gazebo world plugins for underwater robotics simulation</description>
 
   <maintainer email="borgesjvt@gmail.com">João Victor Torres Borges</maintainer>
 
@@ -19,5 +19,6 @@
   <depend>gazebo_msgs</depend>
 
   <export>
+    <build_type>ament_cmake</build_type>
   </export>
 </package>
