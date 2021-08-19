@@ -16,8 +16,8 @@
 /// \file gauss_markov_process.hpp
 /// \brief Implementation of a Gauss-Markov process model
 
-#ifndef UUV2_GAZEBO_ROS_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HPP_
-#define UUV2_GAZEBO_ROS_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HPP_
+#ifndef UUV2_GAZEBO_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HPP_
+#define UUV2_GAZEBO_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HPP_
 
 #include <gazebo/common/Plugin.hh>
 
@@ -80,4 +80,4 @@ class GZ_PLUGIN_VISIBLE GaussMarkovProcess
 };
 
 }  // namespace uuv2_gazebo_world_plugins
-#endif  // UUV2_GAZEBO_ROS_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HPP_
+#endif  // UUV2_GAZEBO_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HPP_

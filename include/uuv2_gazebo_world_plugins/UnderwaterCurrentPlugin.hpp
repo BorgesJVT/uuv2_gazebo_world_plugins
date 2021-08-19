@@ -16,8 +16,8 @@
 /// \file UnderwaterCurrentPlugin.hpp
 /// \brief Plugin that for the underwater world
 
-#ifndef UUV2_GAZEBO_ROS_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HPP_
-#define UUV2_GAZEBO_ROS_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HPP_
+#ifndef UUV2_GAZEBO_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HPP_
+#define UUV2_GAZEBO_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HPP_
 
 #include <memory>
 #include <map>
@@ -94,4 +94,4 @@ class GZ_PLUGIN_VISIBLE UnderwaterCurrentPlugin : public WorldPlugin
 };
 
 }  // namespace uuv2_gazebo_world_plugins
-#endif  // UUV2_GAZEBO_ROS_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HPP_
+#endif  // UUV2_GAZEBO_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HPP_
