@@ -34,7 +34,8 @@ def generate_test_description():
         FindPackageShare('gazebo_ros'), 'launch/gzserver.launch.py'
     ])
 
-    world_file_path = str(Path(__file__).parent / 'worlds/empty_underwater.world')
+    world_file_path = str(
+        Path(__file__).parent / 'worlds/empty_underwater.world')
 
     # Launch Description
     return (
