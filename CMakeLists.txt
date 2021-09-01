@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 project(uuv2_gazebo_world_plugins)
 
+# Default to C++14
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+
 find_package(ament_cmake REQUIRED)
 find_package(GAZEBO REQUIRED)
 find_package(ignition-common3 REQUIRED)
@@ -15,6 +20,7 @@ target_include_directories(underwater_current_plugin PUBLIC include)
 ament_target_dependencies(underwater_current_plugin PUBLIC GAZEBO ignition-common3)
 
 # EXPORT
+ament_export_include_directories(include)
 ament_export_libraries(underwater_current_plugin)
 ament_export_dependencies(GAZEBO ignition-common3)
 
