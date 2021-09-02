@@ -30,8 +30,8 @@ install(
   DESTINATION include
 )
 
-install(TARGETS 
-  underwater_current_plugin 
+install(TARGETS
+  underwater_current_plugin
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin

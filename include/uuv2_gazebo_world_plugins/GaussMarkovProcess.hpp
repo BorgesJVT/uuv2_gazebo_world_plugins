@@ -1,5 +1,4 @@
-// Copyright (c) 2016 The UUV Simulator Authors.
-// All rights reserved.
+// Copyright (c) 2016 The UUV Simulator Authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,23 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// \file gauss_markov_process.hpp
+/// \file GaussMarkovProcess.hpp
 /// \brief Implementation of a Gauss-Markov process model
 
 #ifndef UUV2_GAZEBO_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HPP_
 #define UUV2_GAZEBO_WORLD_PLUGINS__GAUSSMARKOVPROCESS_HPP_
 
-#include <gazebo/common/Plugin.hh>
+#include <gazebo/gazebo.hh>
 
-#include <memory>
+#include <cstdlib>
+#include <ctime>
+#include <random>
 
 namespace uuv2_gazebo_world_plugins
 {
 
 class GZ_PLUGIN_VISIBLE GaussMarkovProcess
-{ 
+{
   /// \brief Constructor
-  public: GaussMarkovProcess();
+
+public:
+  GaussMarkovProcess();
 
   /// \brief Resets the process parameters
   void Reset();
@@ -41,42 +44,64 @@ class GZ_PLUGIN_VISIBLE GaussMarkovProcess
   /// \param _mu Process constant
   /// \param _noise Amplitude for the Gaussian white noise
   /// \return True, if all parameters were valid
-  public: bool SetModel(double _mean, double _min, double _max,
-        double _mu = 0, double _noise = 0);
+
+public:
+  bool SetModel(
+    double _mean, double _min, double _max,
+    double _mu = 0, double _noise = 0);
 
   /// \brief Set mean process value
   /// \param[in] _mean New mean value
   /// \return true if value inside the limit range
-  public: bool SetMean(double _mean);
+
+public:
+  bool SetMean(double _mean);
 
   /// \brief Process variable
-  public: double var;
+
+public:
+  double var;
 
   /// \brief Mean process value
-  public: double mean;
+
+public:
+  double mean;
 
   /// \brief Minimum limit for the process variable
-  public: double min;
+
+public:
+  double min;
 
   /// \brief Maximum limit for the process variable
-  public: double max;
+
+public:
+  double max;
 
   /// \brief Process constant, if zero, process becomes a random walk
-  public: double mu;
+
+public:
+  double mu;
 
   /// \brief Gaussian white noise amplitude
-  public: double noiseAmp;
+
+public:
+  double noiseAmp;
 
   /// \brief Timestamp for the last update
-  public: double lastUpdate;
+
+public:
+  double lastUpdate;
 
   /// \brief Update function for a new time stamp
   /// \param[in] _time Current time stamp
-  public: double Update(double _time);
+
+public:
+  double Update(double _time);
 
   /// \brief Print current model paramters
-  public: void Print();
 
+public:
+  void Print();
 };
 
 }  // namespace uuv2_gazebo_world_plugins

@@ -1,5 +1,4 @@
-// Copyright (c) 2016 The UUV Simulator Authors.
-// All rights reserved.
+// Copyright (c) 2016 The UUV Simulator Authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,15 +14,16 @@
 
 /// \file UnderwaterCurrentPlugin.cpp
 
-#include <functional>
+#include <string>
 
-#include <gazebo/physics/World.hh>
+#include "gazebo/physics/World.hh"
 
-#include <uuv2_gazebo_world_plugins/UnderwaterCurrentPlugin.hpp>
+#include "uuv2_gazebo_world_plugins/UnderwaterCurrentPlugin.hpp"
 
-using namespace uuv2_gazebo_world_plugins;
+GZ_REGISTER_WORLD_PLUGIN(uuv2_gazebo_world_plugins::UnderwaterCurrentPlugin)
 
-GZ_REGISTER_WORLD_PLUGIN(UnderwaterCurrentPlugin)
+namespace uuv2_gazebo_world_plugins
+{
 
 /////////////////////////////////////////////////
 UnderwaterCurrentPlugin::UnderwaterCurrentPlugin()
@@ -37,10 +37,12 @@ UnderwaterCurrentPlugin::~UnderwaterCurrentPlugin()
 }
 
 /////////////////////////////////////////////////
-void UnderwaterCurrentPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf)
+void UnderwaterCurrentPlugin::Load(gazebo::physics::WorldPtr _world, sdf::ElementPtr _sdf)
 {
-  GZ_ASSERT(_world, "UnderwaterCurrentPlugin world pointer is NULL");
-  GZ_ASSERT(_sdf, "UnderwaterCurrentPlugin sdf pointer is NULL");
+  GZ_ASSERT(
+    _world, "UnderwaterCurrentPlugin world pointer is NULL");
+  GZ_ASSERT(
+    _sdf, "UnderwaterCurrentPlugin sdf pointer is NULL");
   this->world = _world;
   this->sdf = _sdf;
 
@@ -49,47 +51,59 @@ void UnderwaterCurrentPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sd
 
   gzmsg << "Loading underwater world..." << std::endl;
   // Initializing the transport node
-  this->node = transport::NodePtr(new transport::Node());
+  this->node = gazebo::transport::NodePtr(new gazebo::transport::Node());
   this->node->Init(this->world->Name());
   // Retrieve the current velocity configuration, if existent
-  GZ_ASSERT(this->sdf->HasElement("constant_current"),
+  GZ_ASSERT(
+    this->sdf->HasElement("constant_current"),
     "Constant current configuration not available");
   sdf::ElementPtr currentVelocityParams = this->sdf->GetElement(
     "constant_current");
 
   // Read the topic names from the SDF file
-  if (currentVelocityParams->HasElement("topic"))
+  if (currentVelocityParams->HasElement("topic")) {
     this->currentVelocityTopic =
       currentVelocityParams->Get<std::string>("topic");
-  else
+  } else {
     this->currentVelocityTopic = "current_velocity";
+  }
 
-  GZ_ASSERT(!this->currentVelocityTopic.empty(),
+  GZ_ASSERT(
+    !this->currentVelocityTopic.empty(),
     "Empty current velocity topic");
 
-  if (currentVelocityParams->HasElement("velocity"))
-  {
+  if (currentVelocityParams->HasElement("velocity")) {
     sdf::ElementPtr elem = currentVelocityParams->GetElement("velocity");
-    if (elem->HasElement("mean"))
-        this->currentVelModel.mean = elem->Get<double>("mean");
-    if (elem->HasElement("min"))
-        this->currentVelModel.min = elem->Get<double>("min");
-    if (elem->HasElement("max"))
-        this->currentVelModel.max = elem->Get<double>("max");
-    if (elem->HasElement("mu"))
-        this->currentVelModel.mu = elem->Get<double>("mu");
-    if (elem->HasElement("noiseAmp"))
-        this->currentVelModel.noiseAmp = elem->Get<double>("noiseAmp");
+    if (elem->HasElement("mean")) {
+      this->currentVelModel.mean = elem->Get<double>("mean");
+    }
+    if (elem->HasElement("min")) {
+      this->currentVelModel.min = elem->Get<double>("min");
+    }
+    if (elem->HasElement("max")) {
+      this->currentVelModel.max = elem->Get<double>("max");
+    }
+    if (elem->HasElement("mu")) {
+      this->currentVelModel.mu = elem->Get<double>("mu");
+    }
+    if (elem->HasElement("noiseAmp")) {
+      this->currentVelModel.noiseAmp = elem->Get<double>("noiseAmp");
+    }
 
-    GZ_ASSERT(this->currentVelModel.min < this->currentVelModel.max,
+    GZ_ASSERT(
+      this->currentVelModel.min < this->currentVelModel.max,
       "Invalid current velocity limits");
-    GZ_ASSERT(this->currentVelModel.mean >= this->currentVelModel.min,
+    GZ_ASSERT(
+      this->currentVelModel.mean >= this->currentVelModel.min,
       "Mean velocity must be greater than minimum");
-    GZ_ASSERT(this->currentVelModel.mean <= this->currentVelModel.max,
+    GZ_ASSERT(
+      this->currentVelModel.mean <= this->currentVelModel.max,
       "Mean velocity must be smaller than maximum");
-    GZ_ASSERT(this->currentVelModel.mu >= 0 && this->currentVelModel.mu < 1,
+    GZ_ASSERT(
+      this->currentVelModel.mu >= 0 && this->currentVelModel.mu < 1,
       "Invalid process constant");
-    GZ_ASSERT(this->currentVelModel.noiseAmp < 1 &&
+    GZ_ASSERT(
+      this->currentVelModel.noiseAmp < 1 &&
       this->currentVelModel.noiseAmp >= 0,
       "Noise amplitude has to be smaller than 1");
   }
@@ -98,80 +112,97 @@ void UnderwaterCurrentPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sd
   gzmsg << "Current velocity [m/s] Gauss-Markov process model:" << std::endl;
   this->currentVelModel.Print();
 
-  if (currentVelocityParams->HasElement("horizontal_angle"))
-  {
+  if (currentVelocityParams->HasElement("horizontal_angle")) {
     sdf::ElementPtr elem =
       currentVelocityParams->GetElement("horizontal_angle");
 
-    if (elem->HasElement("mean"))
+    if (elem->HasElement("mean")) {
       this->currentHorzAngleModel.mean = elem->Get<double>("mean");
-    if (elem->HasElement("min"))
+    }
+    if (elem->HasElement("min")) {
       this->currentHorzAngleModel.min = elem->Get<double>("min");
-    if (elem->HasElement("max"))
+    }
+    if (elem->HasElement("max")) {
       this->currentHorzAngleModel.max = elem->Get<double>("max");
-    if (elem->HasElement("mu"))
+    }
+    if (elem->HasElement("mu")) {
       this->currentHorzAngleModel.mu = elem->Get<double>("mu");
-    if (elem->HasElement("noiseAmp"))
+    }
+    if (elem->HasElement("noiseAmp")) {
       this->currentHorzAngleModel.noiseAmp = elem->Get<double>("noiseAmp");
+    }
 
-    GZ_ASSERT(this->currentHorzAngleModel.min <
+    GZ_ASSERT(
+      this->currentHorzAngleModel.min <
       this->currentHorzAngleModel.max,
       "Invalid current horizontal angle limits");
-    GZ_ASSERT(this->currentHorzAngleModel.mean >=
+    GZ_ASSERT(
+      this->currentHorzAngleModel.mean >=
       this->currentHorzAngleModel.min,
       "Mean horizontal angle must be greater than minimum");
-    GZ_ASSERT(this->currentHorzAngleModel.mean <=
+    GZ_ASSERT(
+      this->currentHorzAngleModel.mean <=
       this->currentHorzAngleModel.max,
       "Mean horizontal angle must be smaller than maximum");
-    GZ_ASSERT(this->currentHorzAngleModel.mu >= 0 &&
+    GZ_ASSERT(
+      this->currentHorzAngleModel.mu >= 0 &&
       this->currentHorzAngleModel.mu < 1,
       "Invalid process constant");
-    GZ_ASSERT(this->currentHorzAngleModel.noiseAmp < 1 &&
+    GZ_ASSERT(
+      this->currentHorzAngleModel.noiseAmp < 1 &&
       this->currentHorzAngleModel.noiseAmp >= 0,
       "Noise amplitude for horizontal angle has to be between 0 and 1");
   }
 
   this->currentHorzAngleModel.var = this->currentHorzAngleModel.mean;
-  gzmsg <<
-    "Current velocity horizontal angle [rad] Gauss-Markov process model:"
-    << std::endl;
+  gzmsg << "Current velocity horizontal angle [rad] Gauss-Markov process model:" <<
+    std::endl;
   this->currentHorzAngleModel.Print();
 
-  if (currentVelocityParams->HasElement("vertical_angle"))
-  {
+  if (currentVelocityParams->HasElement("vertical_angle")) {
     sdf::ElementPtr elem = currentVelocityParams->GetElement("vertical_angle");
 
-    if (elem->HasElement("mean"))
+    if (elem->HasElement("mean")) {
       this->currentVertAngleModel.mean = elem->Get<double>("mean");
-    if (elem->HasElement("min"))
+    }
+    if (elem->HasElement("min")) {
       this->currentVertAngleModel.min = elem->Get<double>("min");
-    if (elem->HasElement("max"))
+    }
+    if (elem->HasElement("max")) {
       this->currentVertAngleModel.max = elem->Get<double>("max");
-    if (elem->HasElement("mu"))
+    }
+    if (elem->HasElement("mu")) {
       this->currentVertAngleModel.mu = elem->Get<double>("mu");
-    if (elem->HasElement("noiseAmp"))
+    }
+    if (elem->HasElement("noiseAmp")) {
       this->currentVertAngleModel.noiseAmp = elem->Get<double>("noiseAmp");
+    }
 
-    GZ_ASSERT(this->currentVertAngleModel.min <
+    GZ_ASSERT(
+      this->currentVertAngleModel.min <
       this->currentVertAngleModel.max, "Invalid current vertical angle limits");
-    GZ_ASSERT(this->currentVertAngleModel.mean >=
+    GZ_ASSERT(
+      this->currentVertAngleModel.mean >=
       this->currentVertAngleModel.min,
       "Mean vertical angle must be greater than minimum");
-    GZ_ASSERT(this->currentVertAngleModel.mean <=
+    GZ_ASSERT(
+      this->currentVertAngleModel.mean <=
       this->currentVertAngleModel.max,
       "Mean vertical angle must be smaller than maximum");
-    GZ_ASSERT(this->currentVertAngleModel.mu >= 0 &&
+    GZ_ASSERT(
+      this->currentVertAngleModel.mu >= 0 &&
       this->currentVertAngleModel.mu < 1,
       "Invalid process constant");
-    GZ_ASSERT(this->currentVertAngleModel.noiseAmp < 1 &&
+    GZ_ASSERT(
+      this->currentVertAngleModel.noiseAmp < 1 &&
       this->currentVertAngleModel.noiseAmp >= 0,
       "Noise amplitude for vertical angle has to be between 0 and 1");
   }
 
   this->currentVertAngleModel.var = this->currentVertAngleModel.mean;
   gzmsg <<
-    "Current velocity horizontal angle [rad] Gauss-Markov process model:"
-    << std::endl;
+    "Current velocity horizontal angle [rad] Gauss-Markov process model:" <<
+    std::endl;
   this->currentHorzAngleModel.Print();
 
   // Initialize the time update
@@ -183,26 +214,25 @@ void UnderwaterCurrentPlugin::Load(physics::WorldPtr _world, sdf::ElementPtr _sd
 
   // Advertise the current velocity topic
   this->publishers[this->currentVelocityTopic] =
-    this->node->Advertise<msgs::Vector3d>(
+    this->node->Advertise<gazebo::msgs::Vector3d>(
     this->ns + "/" + this->currentVelocityTopic);
 
   gzmsg << "Current velocity topic name: " <<
     this->ns + "/" + this->currentVelocityTopic << std::endl;
 
   // Connect the update event
-  this->updateConnection = event::Events::ConnectWorldUpdateBegin(
-        std::bind(&UnderwaterCurrentPlugin::Update, this));
+  this->updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
+    std::bind(&UnderwaterCurrentPlugin::Update, this));
 
-  gzmsg << "Underwater current plugin loaded!" << std::endl
-    << "\tWARNING: Current velocity calculated in the ENU frame"
-    << std::endl;
-  
+  gzmsg << "Underwater current plugin loaded!" << std::endl <<
+    "\tWARNING: Current velocity calculated in the ENU frame" <<
+    std::endl;
 }  // end Load function
 
 /////////////////////////////////////////////////
 void UnderwaterCurrentPlugin::Update()
 {
-  common::Time time = this->world->SimTime();
+  gazebo::common::Time time = this->world->SimTime();
 
   // Calculate the flow velocity and the direction using the Gauss-Markov
   // model
@@ -218,9 +248,9 @@ void UnderwaterCurrentPlugin::Update()
 
   // Generating the current velocity vector as in the NED frame
   this->currentVelocity = ignition::math::Vector3d(
-      currentVelMag * cos(horzAngle) * cos(vertAngle),
-      currentVelMag * sin(horzAngle) * cos(vertAngle),
-      currentVelMag * sin(vertAngle));
+    currentVelMag * cos(horzAngle) * cos(vertAngle),
+    currentVelMag * sin(horzAngle) * cos(vertAngle),
+    currentVelMag * sin(vertAngle));
 
   // Update time stamp
   this->lastUpdate = time;
@@ -230,9 +260,13 @@ void UnderwaterCurrentPlugin::Update()
 /////////////////////////////////////////////////
 void UnderwaterCurrentPlugin::PublishCurrentVelocity()
 {
-  msgs::Vector3d currentVel;
-  msgs::Set(&currentVel, ignition::math::Vector3d(this->currentVelocity.X(),
-                                                  this->currentVelocity.Y(),
-                                                  this->currentVelocity.Z()));
+  gazebo::msgs::Vector3d currentVel;
+  gazebo::msgs::Set(
+    &currentVel, ignition::math::Vector3d(
+      this->currentVelocity.X(),
+      this->currentVelocity.Y(),
+      this->currentVelocity.Z()));
   this->publishers[this->currentVelocityTopic]->Publish(currentVel);
 }
+
+}  // namespace uuv2_gazebo_world_plugins

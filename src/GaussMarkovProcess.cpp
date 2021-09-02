@@ -1,5 +1,4 @@
-// Copyright (c) 2016 The UUV Simulator Authors.
-// All rights reserved.
+// Copyright (c) 2016 The UUV Simulator Authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,13 +14,16 @@
 
 /// \file GaussMarkovProcess.cpp
 
+#include <algorithm>
+
 #include "uuv2_gazebo_world_plugins/GaussMarkovProcess.hpp"
 
 namespace uuv2_gazebo_world_plugins
 {
 
 /////////////////////////////////////////////////
-GaussMarkovProcess::GaussMarkovProcess() : mean(0.0), min(-1.0), max(1.0), noiseAmp(0.0)
+GaussMarkovProcess::GaussMarkovProcess()
+: mean(0.0), min(-1.0), max(1.0), noiseAmp(0.0)
 {
   this->Reset();
   std::srand(std::time(NULL));
@@ -36,8 +38,9 @@ void GaussMarkovProcess::Reset()
 /////////////////////////////////////////////////
 bool GaussMarkovProcess::SetMean(double _mean)
 {
-  if (this->min > _mean || this->max < _mean)
+  if (this->min > _mean || this->max < _mean) {
     return false;
+  }
 
   this->mean = _mean;
   this->Reset();
@@ -45,17 +48,22 @@ bool GaussMarkovProcess::SetMean(double _mean)
 }
 
 /////////////////////////////////////////////////
-bool GaussMarkovProcess::SetModel(double _mean, double _min, double _max,
-    double _mu, double _noise)
+bool GaussMarkovProcess::SetModel(
+  double _mean, double _min, double _max,
+  double _mu, double _noise)
 {
-  if (_min >= _max)
+  if (_min >= _max) {
     return false;
-  if (_min > _mean || _max < _mean)
+  }
+  if (_min > _mean || _max < _mean) {
     return false;
-  if (_noise < 0)
+  }
+  if (_noise < 0) {
     return false;
-  if (_mu < 0 || _mu > 1)
+  }
+  if (_mu < 0 || _mu > 1) {
     return false;
+  }
   this->mean = _mean;
   this->min = _min;
   this->max = _max;
@@ -70,13 +78,16 @@ bool GaussMarkovProcess::SetModel(double _mean, double _min, double _max,
 double GaussMarkovProcess::Update(double _time)
 {
   double step = _time - this->lastUpdate;
-  double random =  static_cast<double>(static_cast<double>(rand()) / RAND_MAX)
-    - 0.5;
+  // TODO(borgesjvt): consider using <random> instead of rand().
+  double random = static_cast<double>(static_cast<double>(rand()) / RAND_MAX) -  // NOLINT
+    0.5;
   this->var = (1 - step * this->mu) * this->var + this->noiseAmp * random;
-  if (this->var >= this->max)
+  if (this->var >= this->max) {
     this->var = this->max;
-  if (this->var <= this->min)
+  }
+  if (this->var <= this->min) {
     this->var = this->min;
+  }
   this->lastUpdate = _time;
 
   return this->var;
@@ -85,11 +96,11 @@ double GaussMarkovProcess::Update(double _time)
 /////////////////////////////////////////////////
 void GaussMarkovProcess::Print()
 {
-  gzmsg << "\tMean = " << this->mean << std::endl
-    << "\tMin. Limit = " << this->min << std::endl
-    << "\tMax. Limit = " << this->max << std::endl
-    << "\tMu = " << this->mu << std::endl
-    << "\tNoise Amp. = " << this->noiseAmp << std::endl;
+  gzmsg << "\tMean = " << this->mean << std::endl <<
+    "\tMin. Limit = " << this->min << std::endl <<
+    "\tMax. Limit = " << this->max << std::endl <<
+    "\tMu = " << this->mu << std::endl <<
+    "\tNoise Amp. = " << this->noiseAmp << std::endl;
 }
 
 }  // namespace uuv2_gazebo_world_plugins

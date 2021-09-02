@@ -1,5 +1,4 @@
-// Copyright (c) 2016 The UUV Simulator Authors.
-// All rights reserved.
+// Copyright (c) 2016 The UUV Simulator Authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,83 +13,117 @@
 // limitations under the License.
 
 /// \file UnderwaterCurrentPlugin.hpp
-/// \brief Plugin that for the underwater world
+/// \brief Plugin for the underwater world
 
 #ifndef UUV2_GAZEBO_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HPP_
 #define UUV2_GAZEBO_WORLD_PLUGINS__UNDERWATERCURRENTPLUGIN_HPP_
 
-#include <memory>
 #include <map>
+#include <cmath>
 #include <string>
 
-#include <gazebo/gazebo.hh>
-#include <gazebo/transport/TransportTypes.hh>
-#include <sdf/sdf.hh>
-#include <uuv2_gazebo_world_plugins/GaussMarkovProcess.hpp>
+#include "gazebo/gazebo.hh"
+#include "gazebo/transport/TransportTypes.hh"
+#include "sdf/sdf.hh"
 
-using namespace gazebo;
+#include "uuv2_gazebo_world_plugins/GaussMarkovProcess.hpp"
 
 namespace uuv2_gazebo_world_plugins
 {
 
-class GZ_PLUGIN_VISIBLE UnderwaterCurrentPlugin : public WorldPlugin
+class GZ_PLUGIN_VISIBLE UnderwaterCurrentPlugin : public gazebo::WorldPlugin
 {
   /// \brief Constructor
-  public: UnderwaterCurrentPlugin();
-  
+
+public:
+  UnderwaterCurrentPlugin();
+
   /// Destructor
-  public: virtual ~UnderwaterCurrentPlugin();
+
+public:
+  virtual ~UnderwaterCurrentPlugin();
 
   // Documentation inherited.
-  public: void Load(physics::WorldPtr _world,
-        sdf::ElementPtr _sdf);
+
+public:
+  void Load(
+    gazebo::physics::WorldPtr _world,
+    sdf::ElementPtr _sdf);
 
   /// \brief Update the simulation state.
-  public: void Update();
+
+public:
+  void Update();
 
   /// \brief Publish current velocity and the pose of its frame
-  protected: void PublishCurrentVelocity();
+
+protected:
+  void PublishCurrentVelocity();
 
   /// \brief Update event
-  protected: event::ConnectionPtr updateConnection;
+
+protected:
+  gazebo::event::ConnectionPtr updateConnection;
 
   /// \brief Pointer to world
-  protected: physics::WorldPtr world;
+
+protected:
+  gazebo::physics::WorldPtr world;
 
   /// \brief Pointer to sdf
-  protected: sdf::ElementPtr sdf;
+
+protected:
+  sdf::ElementPtr sdf;
 
   /// \brief True if the sea surface is present
-  protected: bool hasSurface;
+
+protected:
+  bool hasSurface;
 
   /// \brief Pointer to a node for communication
-  protected: transport::NodePtr node;
+
+protected:
+  gazebo::transport::NodePtr node;
 
   /// \brief Map of publishers
-  protected: std::map<std::string, transport::PublisherPtr>
-    publishers;
+
+protected:
+  std::map<std::string, gazebo::transport::PublisherPtr> publishers;
 
   /// \brief Current velocity topic
-  protected: std::string currentVelocityTopic;
+
+protected:
+  std::string currentVelocityTopic;
 
   /// \brief Namespace for topics and services
-  protected: std::string ns;
+
+protected:
+  std::string ns;
 
   /// \brief Gauss-Markov process instance for the current velocity
-  protected: GaussMarkovProcess currentVelModel;
+
+protected:
+  GaussMarkovProcess currentVelModel;
 
   /// \brief Gauss-Markov process instance for horizontal angle model
-  protected: GaussMarkovProcess currentHorzAngleModel;
+
+protected:
+  GaussMarkovProcess currentHorzAngleModel;
 
   /// \brief Gauss-Markov process instance for vertical angle model
-  protected: GaussMarkovProcess currentVertAngleModel;
+
+protected:
+  GaussMarkovProcess currentVertAngleModel;
 
   /// \brief Last update time stamp
-  protected: common::Time lastUpdate;
+
+protected:
+  gazebo::common::Time lastUpdate;
 
   /// \brief Current linear velocity vector
-  protected: ignition::math::Vector3d currentVelocity;  
-    
+
+protected:
+  ignition::math::Vector3d currentVelocity;
 };
 
 }  // namespace uuv2_gazebo_world_plugins
