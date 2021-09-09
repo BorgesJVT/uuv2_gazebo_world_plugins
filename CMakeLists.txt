@@ -8,7 +8,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(GAZEBO REQUIRED)
-find_package(ignition-common3 REQUIRED)
+find_package(ignition-math6 REQUIRED)
 
 # BUILD
 add_library(underwater_current_plugin SHARED
@@ -41,6 +41,7 @@ install(TARGETS
 if(BUILD_TESTING)
   # find_package(ament_lint_auto REQUIRED)
   find_package(launch_testing_ament_cmake REQUIRED)
+  find_package(gazebo_ros REQUIRED)
 
   # ament_lint_auto_find_test_dependencies()
   add_launch_test(test/underwater_empty_world_spawn.test.py)
