@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>uuv2_gazebo_world_plugins</name>
+  <version>0.0.1</version>
+  <description>Gazebo world plugins for underwater robotics simulation</description>
+
+  <maintainer email="borgesjvt@gmail.com">João Victor Torres Borges</maintainer>
+
+  <license>Apache License 2.0</license>
+
+  <author email="musa.marcusso@de.bosch.com">Musa Morena Marcusso Manhaes</author>
+  <author email="sebastian.scherer2@de.bosch.com">Sebastian Scherer</author>
+  <author email="luizricardo.douat@de.bosch.com">Luiz Ricardo Douat</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>ignition-math6</depend>
+  <depend>libgazebo11-dev</depend>
+
+  <!-- ros2pkg is required for gazebo_ros but it is not declared as dependency there -->
+  <exec_depend>ros2pkg</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>gazebo_ros</test_depend>
+  <test_depend>launch_ros</test_depend>
+  <test_depend>launch_testing_ament_cmake</test_depend>
+  <test_depend>launch</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
