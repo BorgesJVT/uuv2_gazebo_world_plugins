@@ -15,8 +15,8 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>gazebo_dev</depend>
-  <depend>gazebo_msgs</depend>
+  <depend>ignition-math6</depend>
+  <depend>libgazebo11-dev</depend>
 
   <!-- ros2pkg is required for gazebo_ros but it is not declared as dependency there -->
   <exec_depend>ros2pkg</exec_depend>

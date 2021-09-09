@@ -17,12 +17,12 @@ add_library(underwater_current_plugin SHARED
 )
 
 target_include_directories(underwater_current_plugin PUBLIC include)
-ament_target_dependencies(underwater_current_plugin PUBLIC GAZEBO ignition-common3)
+ament_target_dependencies(underwater_current_plugin PUBLIC GAZEBO ignition-math6)
 
 # EXPORT
 ament_export_include_directories(include)
 ament_export_libraries(underwater_current_plugin)
-ament_export_dependencies(GAZEBO ignition-common3)
+ament_export_dependencies(GAZEBO ignition-math6)
 
 # INSTALL
 install(
